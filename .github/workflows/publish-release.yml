@@ -1,0 +1,49 @@
+# Publishes the Offer Editor installer as a GitHub release.
+# Claude pushes the build (installer, blockmap, latest.yml, RELEASE_NOTES.md) to the release-upload branch;
+# this workflow creates release v<version> from it, or replaces the files and notes when that release exists.
+# Installed editors update from the latest release (electron-updater reads latest.yml).
+name: Publish release
+
+on:
+  push:
+    branches: [release-upload]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release-upload
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="$(sed -n 's/^version: *//p' latest.yml | head -1)"
+          tag="v${version}"
+          exe="Waifu-Shop-Offer-Editor-Setup-${version}.exe"
+          test -n "$version" && test -f "$exe" && test -f "$exe.blockmap" && test -f RELEASE_NOTES.md
+          # The installer must be the one latest.yml describes, or installed editors reject the update.
+          expected="$(sed -n 's/^sha512: *//p' latest.yml | head -1)"
+          actual="$(openssl dgst -sha512 -binary "$exe" | base64 -w0)"
+          test "$expected" = "$actual" || { echo "latest.yml checksum does not match $exe"; exit 1; }
+
+          if gh release view "$tag" >/dev/null 2>&1; then
+            # Installer first, latest.yml last, so latest.yml never points at a missing file.
+            gh release upload "$tag" "$exe" "$exe.blockmap" --clobber
+            gh release upload "$tag" latest.yml --clobber
+            gh release edit "$tag" --title "Offer Editor ${version}" --notes-file RELEASE_NOTES.md --draft=false --prerelease=false
+          else
+            gh release create "$tag" "$exe" "$exe.blockmap" latest.yml \
+              --title "Offer Editor ${version}" --notes-file RELEASE_NOTES.md --target "${{ github.event.repository.default_branch }}" --latest
+          fi
+          echo "Published ${tag}"
