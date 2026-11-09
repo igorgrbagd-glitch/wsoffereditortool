@@ -1,12 +1,27 @@
 ### New
-- Quest Simulator (Quests on the left): pick a quest, its level, a normal run or the boss fight and a boost, fill a party of up to 5 heroes, and see party power against the thresholds, success chance, rewards, run time, and each hero's injury, gear break, experience and rest. Set each hero's level, skills, power boost and gear on the right. A Monte Carlo run and a "Clearing level" estimate show how long a quest level takes. Uses Customers.json as it is in the editor, unsaved changes included.
-- Quest Simulator, Tune: edit the selected quest level (power steps, boss steps, rewards, experience, wins to boss, quest time) and the success chance per step, with Undo and the normal Save to Quest.json and QuestSystem.json. A table shows the party's results on disk next to the edited ones.
-- Quest Simulator, Balance grid: the hero level your party needs for every quest level, normal and boss, per power step. Spikes and cells that differ from the files on disk are marked; click a cell to open it.
-- Quest Simulator, Economy: components and gold per hour (quest time plus rest), components lost to full storage, crystals to rush the quest or heal the party, and repair costs per run. Set the player's storage and class building levels; heroes above their building's cap are marked, and the Heroes table shows the runs to each hero's next level.
-- Quest Simulator, Find a party: the strongest party, or the weakest that still reaches a power step, from every customer at a chosen level, skills and gear quality (filter by rank and class).
-- Quest Simulator, Presets: save the quest, party, storage and buildings under a name (e.g. "Day 7 free player"), load them back, and copy or paste them to share with the team.
-- Quest Simulator: a chart of how many components the simulated runs gave.
-- Quest Simulator, Difficulty curve (top of the Balance grid): every quest level in unlock order with the band of hero levels between its first and last power step (the flow channel), boss markers, and your presets plotted where their players stand, coloured by zone (cannot start, flow, 100% every run). Click a point to open it.
+
+#### Chain Offers
+- Popups on the left, Repository/Offers/ChainOffer.json: a time-limited Reward Chain popup whose paid and free steps unlock in order, in any mix (paid, free, free, paid...). The preview matches the game: Reward Chain title, Concludes in timer, close button, collection offer reward tiles, green price and glowing Free buttons, locks, sold out and the arrows between steps. Player progress shows the chain as a player on any step sees it.
+- Add free or paid steps, make a step paid or free, reorder and remove steps, and edit each step's rewards (plain reward pairs like Offer.json; tile backgrounds come from the reward, like collection offers). A paid step gets its own offer in Offer.json (<chain id>_Step_<n>, next steamId, ChainOfferPremium reward); click it to edit its price on the right.
+- Hover a step, reward or button to find its fields below the preview (and the other way round), click a reward to edit it on the right, click a step or a paid button to select it, and drag the steps up and down (or use the mouse wheel) to scroll them like in the game. Text labels drag and resize like promotion labels.
+- New from this... copies a chain offer with the next id and dates, and copies its paid step offers under the new id with new steamIds.
+
+#### Popups
+- Shortcuts: Esc deselects; on a chain offer, Delete removes the selected reward, step or text and Up / Down move the selected step; arrow keys nudge the selected text of a chain offer or shop promotion (Shift = 10).
+
+#### Quest Simulator
+- Tiers tab: switch the simulator between the game's power steps and a success curve on party power / quest rating (steepness, 50% point, highest and lowest chance, start chance), with a chart against the tier targets and Fit to tier targets.
+- Tiers tab: difficulty tiers (Easy, Normal, Challenging, Elite, Hardcore) with editable rating bands, success targets and quest shares, a reference player built from your presets, and a tier report that grades every quest level and boss with both success models. The difficulty curve gets a tier strip.
+- Generate ratings: proposes a rating and tier for every quest level from the reference player and a pacing pattern (per island, the brief's mix or its example), with boss and island rules, an option to keep each quest's levels rising, a before/after preview, and Apply to Quest.json (one undo step). It writes ratings and tiers only; the power steps the game uses today are left as they are.
+- Rewards and failure: tier reward multipliers, partial rewards and shorter rest after a failure, and a pity bonus after failures in a row, with each tier's value per hour against its target and against the game's rules, a solver for the multipliers, and an option to use the rules in Run.
+- In the game: shows what QuestSystem.json tells the game about quest success and rewards, and writes the simulator's rules there or loads them back (needs the matching game update).
 
 ### Improved
-- The Quest Simulator's numbers are checked against the game itself: npm run test:unity computes random parties with the real game code in the open Unity Editor and compares hero power, party power and gear break chances (2000 parties match exactly).
+
+#### Chain Offers
+- Chain offer step offers are not orphans, follow a rename of their offer (including the ChainOfferPremium reward), and their labels go to the Save dialog's Localization_en rows.
+- Save checks chain offers: step offers and their ChainOfferPremium reward, steps without rewards, one offer per step, reward formats and dates.
+
+#### Quest Simulator
+- Save checks Quest.json ratings and tiers and the new QuestSystem.json settings.
+- npm run test:unity also checks the success chance and the files the simulator writes against the game in the open Unity Editor.
