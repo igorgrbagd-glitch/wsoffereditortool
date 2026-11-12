@@ -1,8 +1,8 @@
-version: 0.4.3
+version: 0.4.4
 files:
-  - url: Waifu-Shop-Offer-Editor-Setup-0.4.3.exe
-    sha512: 4qRqnRnuxaKG1F7tcRhLWnNJkXWS+NdmpesWnL0G+p9G0SZ7GwbIEXSDnQgtB8ERJFY2f/CTmGmyviPxDBEnww==
-    size: 81891976
-path: Waifu-Shop-Offer-Editor-Setup-0.4.3.exe
-sha512: 4qRqnRnuxaKG1F7tcRhLWnNJkXWS+NdmpesWnL0G+p9G0SZ7GwbIEXSDnQgtB8ERJFY2f/CTmGmyviPxDBEnww==
-releaseDate: '2026-11-10T01:52:23.798Z'
+  - url: Waifu-Shop-Offer-Editor-Setup-0.4.4.exe
+    sha512: JZ6LskTeKNNHJopmQh3zVSgm2k2eP4tiEPFitj5jzvUjS4f84BAIuVwS/8nrhNy248Q3GvBxG0G8V8Vb3npySQ==
+    size: 81918028
+path: Waifu-Shop-Offer-Editor-Setup-0.4.4.exe
+sha512: JZ6LskTeKNNHJopmQh3zVSgm2k2eP4tiEPFitj5jzvUjS4f84BAIuVwS/8nrhNy248Q3GvBxG0G8V8Vb3npySQ==
+releaseDate: '2026-11-10T17:20:48.036Z'
